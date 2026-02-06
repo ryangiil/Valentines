@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💝</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts animation */
+        .heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 24px;
+            animation: float 8s infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            z-index: 2;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            color: #ff6b9d;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .question {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .gif-container {
+            margin: 30px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .gif-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .no-btn {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+            position: relative;
+        }
+
+        .no-btn:hover {
+            transform: scale(0.9);
+        }
+
+        /* Love meter styles */
+        .love-meter {
+            margin: 30px 0;
+            display: none;
+        }
+
+        .meter-container {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .meter-bar {
+            width: 100%;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b9d, #ff9a9e);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .love-percentage {
+            font-size: 3em;
+            color: #ff6b9d;
+            font-weight: bold;
+            margin: 20px 0;
+            animation: countUp 2s ease-out;
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Final celebration screen */
+        .celebration {
+            display: none;
+        }
+
+        .celebration h2 {
+            font-size: 3em;
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            animation: bounce 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-10px);
+            }
+        }
+
+        .celebration-text {
+            font-size: 1.3em;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Confetti animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-top: 20px;
+        }
+
+        .next-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <div class="heart-container" id="heartContainer"></div>
+
+    <div class="container">
+        <!-- Screen 1: First Question -->
+        <div id="screen1">
+            <h1>Hey Beautiful! 💕</h1>
+            <div class="gif-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcXZ5N3J5dHFoOGN5N3NrNXFhZGN5dGN5NXF1OGN5NXFhZGN5dGN5NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MDJ9IbxxvDUQM/giphy.gif" alt="Cute bear">
+            </div>
+            <p class="question">Do you like me? 🥺</p>
+            <div class="buttons">
+                <button class="yes-btn" onclick="goToScreen2()">Yes! ❤️</button>
+                <button class="no-btn" id="noBtn1" onclick="moveButton(this)">No</button>
+            </div>
+        </div>
+
+        <!-- Screen 2: Love Meter -->
+        <div id="screen2" class="hidden">
+            <h1>How Much Do You Love Me? 💖</h1>
+            <div class="love-meter">
+                <p class="question">Slide to show how much! 📊</p>
+                <div class="love-percentage" id="lovePercentage">0%</div>
+                <div class="meter-container">
+                    <input type="range" min="0" max="200" value="0" id="loveSlider" 
+                           style="width: 100%; height: 30px; cursor: pointer;">
+                </div>
+                <p id="loveMessage" style="color: #ff6b9d; font-size: 1.2em; margin-top: 20px; min-height: 30px;"></p>
+                <button class="next-btn" onclick="goToScreen3()">Next ❤️</button>
+            </div>
+        </div>
+
+        <!-- Screen 3: Final Question -->
+        <div id="screen3" class="hidden">
+            <h1>One More Thing... 💝</h1>
+            <div class="gif-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcXZ5N3J5dHFoOGN5N3NrNXFhZGN5dGN5NXF1OGN5NXFhZGN5dGN5NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L05HgB2h6qICDs5Sms/giphy.gif" alt="Heart">
+            </div>
+            <p class="question">Will you be my Valentine? 🌹</p>
+            <div class="buttons">
+                <button class="yes-btn" onclick="celebrate()">YES! 💕</button>
+                <button class="no-btn" id="noBtn2" onclick="moveButton(this)">No</button>
+            </div>
+        </div>
+
+        <!-- Screen 4: Celebration -->
+        <div id="celebration" class="celebration hidden">
+            <h2>YAAAY! 🎉</h2>
+            <div class="gif-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcXZ5N3J5dHFoOGN5N3NrNXFhZGN5dGN5NXF1OGN5NXFhZGN5dGN5NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KZQlfylo73AMU/giphy.gif" alt="Happy">
+            </div>
+            <p class="celebration-text">
+                You've made me the happiest person! ❤️<br>
+                Can't wait to spend Valentine's Day with you! 💝<br>
+                <strong>I love you so much! 😘</strong>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createFloatingHearts() {
+            const hearts = ['❤️', '💕', '💖', '💗', '💝', '🌹', '💐', '🎀'];
+            const container = document.getElementById('heartContainer');
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                container.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 8000);
+            }, 300);
+        }
+
+        createFloatingHearts();
+
+        // Move "No" button when trying to click it
+        function moveButton(button) {
+            const container = button.parentElement;
+            const containerRect = container.getBoundingClientRect();
+            const buttonRect = button.getBoundingClientRect();
+            
+            const maxX = containerRect.width - buttonRect.width;
+            const maxY = containerRect.height - buttonRect.height;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            button.style.position = 'absolute';
+            button.style.left = randomX + 'px';
+            button.style.top = randomY + 'px';
+            
+            // Also make the button smaller each time
+            const currentSize = parseFloat(window.getComputedStyle(button).fontSize);
+            button.style.fontSize = (currentSize * 0.9) + 'px';
+            button.style.padding = '10px 25px';
+        }
+
+        // Navigate to screen 2
+        function goToScreen2() {
+            document.getElementById('screen1').classList.add('hidden');
+            document.getElementById('screen2').classList.remove('hidden');
+            document.querySelector('.love-meter').style.display = 'block';
+            
+            // Setup love slider
+            const slider = document.getElementById('loveSlider');
+            const percentage = document.getElementById('lovePercentage');
+            const message = document.getElementById('loveMessage');
+            
+            slider.oninput = function() {
+                const value = this.value;
+                percentage.textContent = value + '%';
+                
+                if (value > 150) {
+                    message.textContent = 'WOW! To infinity and beyond! 🚀💝';
+                } else if (value > 100) {
+                    message.textContent = 'That\'s a lot of love! 🥰💖';
+                } else if (value > 50) {
+                    message.textContent = 'Keep going! Show me more! 💕';
+                } else {
+                    message.textContent = 'Come on, you can do better than that! 😉';
+                }
+            };
+        }
+
+        // Navigate to screen 3
+        function goToScreen3() {
+            document.getElementById('screen2').classList.add('hidden');
+            document.getElementById('screen3').classList.remove('hidden');
+        }
+
+        // Final celebration
+        function celebrate() {
+            document.getElementById('screen3').classList.add('hidden');
+            document.getElementById('celebration').classList.remove('hidden');
+            
+            // Create confetti
+            createConfetti();
+            
+            // Play a fun animation
+            const celebration = document.getElementById('celebration');
+            celebration.style.animation = 'slideIn 0.5s ease-out';
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b9d', '#f093fb', '#667eea', '#764ba2', '#feca57', '#ff6348'];
+            const container = document.querySelector('.container');
+            
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.animationDelay = (Math.random() * 2) + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 30);
+            }
+        }
+
+        // Make buttons container relative for absolute positioning
+        document.querySelectorAll('.buttons').forEach(btn => {
+            btn.style.position = 'relative';
+            btn.style.minHeight = '100px';
+        });
+    </script>
+</body>
+</html>
